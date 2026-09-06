@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fotos de clase: tus fotos del pizarrón, ordenadas por materia</title>
+  <meta name="description" content="App de pago único que agrupa las fotos de clase por el horario que escribes. Sin cuenta, sin servidor y sin cámara. En tu teléfono.">
+  <meta name="theme-color" content="#F3EEE6">
+  <meta property="og:title" content="Fotos de clase">
+  <meta property="og:description" content="Armas tu horario una vez. La app agrupa las fotos del pizarrón por materia y semestre. Sin cuenta.">
+  <link rel="canonical" href="https://fotosdeclase.app/">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+  <style>
+    :root {
+      --canvas: #F3EEE6;
+      --card: #FFFCF8;
+      --ink: #241C16;
+      --muted: #74685E;
+      --line: #E6D9CB;
+      --accent: #C45D2C;
+      --accent-soft: #F6E2D4;
+      --on-accent: #FFF7F2;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    a { color: var(--accent); }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .brand {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 14px;
+    }
+    nav a:hover { color: var(--ink); }
+    main { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
+    .hero {
+      text-align: center;
+      padding: 48px 0 32px;
+    }
+    .eyebrow {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 99px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(34px, 6vw, 52px);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin: 0 0 16px;
+      font-weight: 700;
+    }
+    .lede {
+      max-width: 34em;
+      margin: 0 auto 28px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .cta {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--on-accent);
+      text-decoration: none;
+      padding: 12px 22px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .cta-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .phone {
+      width: min(280px, 70vw);
+      margin: 40px auto 0;
+      background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+      border-radius: 28px;
+      padding: 18px 14px 22px;
+      box-shadow: 0 16px 40px color-mix(in srgb, var(--ink) 8%, transparent);
+    }
+    .phone h2 { font-size: 22px; margin: 0 0 12px; }
+    .album {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .tile {
+      aspect-ratio: 1;
+      border-radius: 14px;
+      background: linear-gradient(160deg, #E7D3C0, #C45D2C 140%);
+      display: flex;
+      align-items: end;
+      padding: 10px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tile:nth-child(2) { background: linear-gradient(160deg, #D4E0D8, #3D6B52 140%); }
+    .tile:nth-child(3) { background: linear-gradient(160deg, #D9D4E8, #5A4A8A 140%); }
+    .tile:nth-child(4) { background: linear-gradient(160deg, #E8D9C4, #8A5A2A 140%); }
+    section { margin-top: 72px; }
+    h2 { font-size: 22px; letter-spacing: -0.02em; margin: 0 0 20px; }
+    .grid3, .grid2 {
+      display: grid;
+      gap: 16px;
+    }
+    .grid3 { grid-template-columns: repeat(3, 1fr); }
+    .grid2 { grid-template-columns: repeat(2, 1fr); }
+    .card {
+      background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 17px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .num {
+      display: inline-block;
+      width: 28px; height: 28px;
+      border-radius: 99px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 28px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .step p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+    dl { margin: 0; }
+    dt { font-weight: 700; margin-top: 16px; }
+    dd { margin: 6px 0 0; color: var(--muted); }
+    footer {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+    }
+    @media (max-width: 840px) {
+      .grid3, .steps { grid-template-columns: 1fr; }
+      .grid2 { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Fotos de clase</div>
+    <nav>
+      <a href="#como">Cómo</a>
+      <a href="#funciones">Funciones</a>
+      <a href="#plataformas">Plataformas</a>
+      <a href="#precio">Precio</a>
+      <a href="privacy.html">Privacidad</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Pago único. Sin cuenta. En tu aparato</p>
+      <h1>Tus fotos de clase,<br>ordenadas por materia</h1>
+      <p class="lede">Armas tu horario una vez. La app agrupa las fotos del pizarrón por materia y semestre. No usa cámara: lee las que ya están en tu galería. Sin servidor nuestro.</p>
+      <a class="cta" href="#precio">27 MXN (1.99 USD), todo desbloqueado</a>
+      <p class="cta-note">En App Store y Google Play. Sin anuncios. Sin suscripción.</p>
+      <div class="phone" aria-hidden="true">
+        <h2>2027-1</h2>
+        <div class="album">
+          <div class="tile">Criptografía</div>
+          <div class="tile">Redes</div>
+          <div class="tile">Cálculo</div>
+          <div class="tile">Lab</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Tres cosas que hace bien</h2>
+      <div class="grid3">
+        <article class="card">
+          <h3>Orden sin álbumes a mano</h3>
+          <p>Semestres como carpetas, materias como álbumes. Solo entran fotos cuya fecha y hora caen en tu horario. Teoría y laboratorio van separadas.</p>
+        </article>
+        <article class="card">
+          <h3>Todo se queda en tu teléfono</h3>
+          <p>Sin cuenta, sin servidor nuestro y sin nube de la app. Las fotos siguen en la galería del sistema. No las copia, no las mueve y no las borra.</p>
+        </article>
+        <article class="card">
+          <h3>Extras apagados al inicio</h3>
+          <p>Horario de la semana, texto en fotos (OCR), pendientes, archivos y tarjetas. Si no los prendes, no estorban.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="como">
+      <h2>Cómo funciona</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <h3>Escribes el semestre</h3>
+          <p>Una carpeta, por ejemplo 2027-1. Adentro, cada materia con días, horas y periodo.</p>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <h3>Das permiso a fotos</h3>
+          <p>En el teléfono, todas o solo algunas. En Windows, Linux y web eliges archivos.</p>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <h3>Clasifica sola</h3>
+          <p>Si la foto se tomó en el bloque de una materia, entra. Si no, no entra. Puedes moverla o marcar «No es de clase».</p>
+        </div>
+        <div class="step">
+          <span class="num">4</span>
+          <h3>Si cambias de aparato</h3>
+          <p>Exportas un zip con horario y copias de las fotos ya clasificadas, en carpetas por materia. Quien no tenga la app abre el zip y las ve. Con la app, se importan.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="funciones">
+      <h2>Todo lo que trae</h2>
+      <div class="grid2">
+        <article class="card">
+          <h3>Fotos y semestres (siempre)</h3>
+          <p>Álbumes por materia, portadas que eliges, grid, visor, «No es de clase», fotos sueltas y tour la primera vez.</p>
+        </article>
+        <article class="card">
+          <h3>Horario de la semana (opcional)</h3>
+          <p>Bloques de color, margen de minutos y aviso si cambias el horario. Empieza apagado.</p>
+        </article>
+        <article class="card">
+          <h3>Texto en fotos (opcional)</h3>
+          <p>OCR en el aparato con modelo latino incluido. Solo iOS y Android. Buscas lo del pizarrón. Empieza apagado.</p>
+        </article>
+        <article class="card">
+          <h3>Pendientes, archivos y tarjetas</h3>
+          <p>Listas por materia, PDF e imágenes copiados en el teléfono, tarjetas y importar un mazo Anki. Todo apagado al inicio. El Anki se queda aquí; no hay cuenta de Anki.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="plataformas">
+      <h2>Dónde corre</h2>
+      <div class="grid3">
+        <article class="card">
+          <h3>Android e iOS (y iPad)</h3>
+          <p>Galería del sistema. OCR en el aparato. En Android 14 puedes dar todas las fotos o solo algunas.</p>
+        </article>
+        <article class="card">
+          <h3>macOS</h3>
+          <p>Lee la fototeca. El OCR de ML Kit no está en escritorio.</p>
+        </article>
+        <article class="card">
+          <h3>Windows, Linux y web</h3>
+          <p>Eliges archivos y la app conserva una copia local privada. Usa la fecha EXIF de captura cuando existe y, si no, la fecha disponible del archivo. No hay OCR de ML Kit.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="precio">
+      <h2>Precio</h2>
+      <article class="card">
+        <h3>27 MXN (1.99 USD), una vez</h3>
+        <p>Lo cobra Apple o Google en la tienda. Todo queda desbloqueado al comprar. Sin compras dentro de la app. Sin anuncios. 1 o 10 mil usuarios no suben costo de servidor porque no hay servidor nuestro.</p>
+      </article>
+    </section>
+
+    <section id="faq">
+      <h2>Preguntas</h2>
+      <dl>
+        <dt>¿Sube mis fotos?</dt>
+        <dd>No. En Android, iOS y macOS clasifica referencias de la galería; en Windows, Linux y web guarda una copia local privada de lo que eliges.</dd>
+        <dt>¿Necesito internet?</dt>
+        <dd>No para usar la app. El pago es en la tienda.</dd>
+        <dt>¿Tiene cámara?</dt>
+        <dd>No usa cámara. No toma fotos nuevas; ordena las que ya tomaste.</dd>
+        <dt>¿El zip lleva las fotos?</dt>
+        <dd>Sí: copias de las que ya clasificaste, en carpetas por semestre y materia. La galería de tu teléfono no se borra.</dd>
+        <dt>¿El OCR es obligatorio?</dt>
+        <dd>No. Viene apagado. Solo existe en iOS y Android.</dd>
+        <dt>¿Sirve para mi universidad?</dt>
+        <dd>Sí. Tú armas el horario. No traemos datos de ninguna escuela.</dd>
+      </dl>
+    </section>
+  </main>
+  <footer>
+    Fotos de clase. Pago único. Sin cuenta.
+    <a href="privacy.html">Aviso de privacidad</a>.
+    Referencias de layout: <a href="https://mobbin.com/sites/sections/9eae0a79-6d65-4c27-b784-22b762b0b9e6">mymind</a>,
+    <a href="https://mobbin.com/sites/sections/118606ec-ab02-4e19-b5a3-e64fccdc951f">Grammarly</a>,
+    <a href="https://mobbin.com/sites/sections/19f86b97-7156-476d-a1b1-f8ef07aad47d">Visitors</a>.
+  </footer>
+</body>
+</html>
