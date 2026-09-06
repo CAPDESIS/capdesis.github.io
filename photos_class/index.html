@@ -8,18 +8,19 @@
   <meta name="theme-color" content="#F3EEE6">
   <meta property="og:title" content="Fotos de clase">
   <meta property="og:description" content="Armas tu horario una vez. La app agrupa las fotos del pizarrón por materia y semestre. Sin cuenta.">
-  <link rel="canonical" href="https://fotosdeclase.app/">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+  <link rel="canonical" href="https://capdesis.github.io/photos_class/">
+  <link rel="icon" href="icon.png" type="image/png">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <style>
     :root {
       --canvas: #F3EEE6;
       --card: #FFFCF8;
       --ink: #241C16;
-      --muted: #74685E;
+      --muted: #6D6258;
       --line: #E6D9CB;
-      --accent: #C45D2C;
+      --accent: #A84620;
       --accent-soft: #F6E2D4;
-      --on-accent: #FFF7F2;
+      --on-accent: #FFFFFF;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -39,10 +40,14 @@
       margin: 0 auto;
     }
     .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 700;
       font-size: 15px;
       letter-spacing: -0.02em;
     }
+    .brand img { width: 32px; height: 32px; border-radius: 8px; }
     nav a {
       color: var(--muted);
       text-decoration: none;
@@ -52,7 +57,10 @@
     nav a:hover { color: var(--ink); }
     main { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
     .hero {
-      text-align: center;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 48px;
+      align-items: center;
       padding: 48px 0 32px;
     }
     .eyebrow {
@@ -68,7 +76,7 @@
       margin-bottom: 20px;
     }
     h1 {
-      font-size: clamp(34px, 6vw, 52px);
+      font-size: clamp(34px, 5vw, 48px);
       line-height: 1.12;
       letter-spacing: -0.03em;
       margin: 0 0 16px;
@@ -76,7 +84,7 @@
     }
     .lede {
       max-width: 34em;
-      margin: 0 auto 28px;
+      margin: 0 0 28px;
       color: var(--muted);
       font-size: 18px;
     }
@@ -96,34 +104,36 @@
       color: var(--muted);
     }
     .phone {
-      width: min(280px, 70vw);
-      margin: 40px auto 0;
+      width: min(280px, 100%);
       background: var(--card);
       border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
       border-radius: 28px;
-      padding: 18px 14px 22px;
+      padding: 10px;
       box-shadow: 0 16px 40px color-mix(in srgb, var(--ink) 8%, transparent);
     }
-    .phone h2 { font-size: 22px; margin: 0 0 12px; }
-    .album {
+    .phone img {
+      display: block;
+      width: 100%;
+      border-radius: 18px;
+    }
+    .shots {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
     }
-    .tile {
-      aspect-ratio: 1;
-      border-radius: 14px;
-      background: linear-gradient(160deg, #E7D3C0, #C45D2C 140%);
-      display: flex;
-      align-items: end;
-      padding: 10px;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 600;
+    .shots figure { margin: 0; }
+    .shots img {
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+      background: var(--card);
     }
-    .tile:nth-child(2) { background: linear-gradient(160deg, #D4E0D8, #3D6B52 140%); }
-    .tile:nth-child(3) { background: linear-gradient(160deg, #D9D4E8, #5A4A8A 140%); }
-    .tile:nth-child(4) { background: linear-gradient(160deg, #E8D9C4, #8A5A2A 140%); }
+    .shots figcaption {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
     section { margin-top: 72px; }
     h2 { font-size: 22px; letter-spacing: -0.02em; margin: 0 0 20px; }
     .grid3, .grid2 {
@@ -158,6 +168,13 @@
       margin-bottom: 10px;
     }
     .step p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+    .price-card h3 { font-size: 22px; }
+    .price-card ul {
+      margin: 16px 0 0;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
     dl { margin: 0; }
     dt { font-weight: 700; margin-top: 16px; }
     dd { margin: 6px 0 0; color: var(--muted); }
@@ -169,16 +186,21 @@
       font-size: 13px;
       border-top: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
     }
+    footer a { margin-right: 12px; }
     @media (max-width: 840px) {
-      .grid3, .steps { grid-template-columns: 1fr; }
+      .hero, .grid3, .steps, .shots { grid-template-columns: 1fr; }
       .grid2 { grid-template-columns: 1fr; }
       nav { display: none; }
+      .hero { padding-top: 24px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand">Fotos de clase</div>
+    <div class="brand">
+      <img src="icon.png" width="32" height="32" alt="">
+      Fotos de clase
+    </div>
     <nav>
       <a href="#como">Cómo</a>
       <a href="#funciones">Funciones</a>
@@ -189,19 +211,33 @@
   </header>
   <main>
     <section class="hero">
-      <p class="eyebrow">Pago único. Sin cuenta. En tu aparato</p>
-      <h1>Tus fotos de clase,<br>ordenadas por materia</h1>
-      <p class="lede">Armas tu horario una vez. La app agrupa las fotos del pizarrón por materia y semestre. No usa cámara: lee las que ya están en tu galería. Sin servidor nuestro.</p>
-      <a class="cta" href="#precio">27 MXN (1.99 USD), todo desbloqueado</a>
-      <p class="cta-note">En App Store y Google Play. Sin anuncios. Sin suscripción.</p>
-      <div class="phone" aria-hidden="true">
-        <h2>2027-1</h2>
-        <div class="album">
-          <div class="tile">Criptografía</div>
-          <div class="tile">Redes</div>
-          <div class="tile">Cálculo</div>
-          <div class="tile">Lab</div>
-        </div>
+      <div>
+        <p class="eyebrow">Pago único. Sin cuenta. En tu aparato</p>
+        <h1>Tus fotos de clase,<br>ordenadas por materia</h1>
+        <p class="lede">Armas tu horario una vez. La app agrupa las fotos del pizarrón por materia y semestre. No usa cámara: lee las que ya están en tu galería. Sin servidor nuestro.</p>
+        <a class="cta" href="#precio">27 MXN (1.99 USD), todo desbloqueado</a>
+        <p class="cta-note">Sale en App Store y Google Play. Sin anuncios. Sin suscripción.</p>
+      </div>
+      <div class="phone">
+        <img src="shots/01-materias.jpg" alt="Pantalla Materias con el semestre 2027-1 y cinco materias">
+      </div>
+    </section>
+
+    <section>
+      <h2>Así se ve</h2>
+      <div class="shots">
+        <figure>
+          <img src="shots/03-fotos.jpg" alt="Grid de fotos de Criptografía">
+          <figcaption>Fotos por materia</figcaption>
+        </figure>
+        <figure>
+          <img src="shots/05-horario.jpg" alt="Horario de la semana con bloques de color">
+          <figcaption>Horario de la semana</figcaption>
+        </figure>
+        <figure>
+          <img src="shots/04-visor.jpg" alt="Visor de una foto de pizarrón">
+          <figcaption>Visor, sin paywall</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -262,7 +298,7 @@
         </article>
         <article class="card">
           <h3>Texto en fotos (opcional)</h3>
-          <p>OCR en el aparato con modelo latino incluido. Solo iOS y Android. Buscas lo del pizarrón. Empieza apagado.</p>
+          <p>OCR en el aparato con modelo latino incluido. Solo iOS y Android. Buscas lo del pizarrón. Empieza apagado. ML Kit puede enviar métricas técnicas de diagnóstico, nunca las fotos ni el texto.</p>
         </article>
         <article class="card">
           <h3>Pendientes, archivos y tarjetas</h3>
@@ -291,9 +327,14 @@
 
     <section id="precio">
       <h2>Precio</h2>
-      <article class="card">
+      <article class="card price-card">
         <h3>27 MXN (1.99 USD), una vez</h3>
         <p>Lo cobra Apple o Google en la tienda. Todo queda desbloqueado al comprar. Sin compras dentro de la app. Sin anuncios. 1 o 10 mil usuarios no suben costo de servidor porque no hay servidor nuestro.</p>
+        <ul>
+          <li>Álbumes, horario, OCR, pendientes, archivos y tarjetas</li>
+          <li>Pago único. Sin suscripción</li>
+          <li>Sale en App Store y Google Play</li>
+        </ul>
       </article>
     </section>
 
@@ -309,18 +350,16 @@
         <dt>¿El zip lleva las fotos?</dt>
         <dd>Sí: copias de las que ya clasificaste, en carpetas por semestre y materia. La galería de tu teléfono no se borra.</dd>
         <dt>¿El OCR es obligatorio?</dt>
-        <dd>No. Viene apagado. Solo existe en iOS y Android.</dd>
+        <dd>No. Viene apagado. Solo existe en iOS y Android. ML Kit puede enviar métricas técnicas, nunca las fotos ni el texto reconocido.</dd>
         <dt>¿Sirve para mi universidad?</dt>
         <dd>Sí. Tú armas el horario. No traemos datos de ninguna escuela.</dd>
       </dl>
     </section>
   </main>
   <footer>
-    Fotos de clase. Pago único. Sin cuenta.
-    <a href="privacy.html">Aviso de privacidad</a>.
-    Referencias de layout: <a href="https://mobbin.com/sites/sections/9eae0a79-6d65-4c27-b784-22b762b0b9e6">mymind</a>,
-    <a href="https://mobbin.com/sites/sections/118606ec-ab02-4e19-b5a3-e64fccdc951f">Grammarly</a>,
-    <a href="https://mobbin.com/sites/sections/19f86b97-7156-476d-a1b1-f8ef07aad47d">Visitors</a>.
+    Fotos de clase. Pago único. Sin cuenta. CAPDESIS.
+    <a href="privacy.html">Aviso de privacidad</a>
+    <a href="https://github.com/CAPDESIS/capdesis.github.io/issues">Soporte</a>
   </footer>
 </body>
 </html>
